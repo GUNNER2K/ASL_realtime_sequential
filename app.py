@@ -40,14 +40,17 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader('About the App')
-        st.write('''This app is a Sign Language to text translator app for people who dont know how to use sign language.
-             I'm using the American Sign Language standards for this purpose as it is the most widely used sign language standard out there.''')
-        st.write('The App uses a Convolutional Neural Network(CNN) built and trained with the help of Tensorflow to detect and recognize the alphabet that is being spelled by hand.')
+        st.write('''This app is a Sign Language to text translator app for created by Group 14 of BAI 20 Branch for Capstone Project DSN 4095 and DSN 4096.
+             we are using the American Sign Language standards for this purpose as it is the most widely used sign language standard out there.''')
+        st.write('The App uses a stacked LSTM network built and trained with the help of Tensorflow to detect sequences of data. Here RNN is used instead of CNN to provide room for contextualization and real life application.')
+        st.write('We would like to thank our guide, `DR. ANIL KUMAR YADAV` for guiding us for the entirity of this Capstone Project DSN 4095 and DSN 4096')
         st.markdown('**Techstack used for the app:**')
-        st.markdown(' - Tensorflow')
-        st.markdown(' - Pandas')
-        st.markdown(' - Numpy')
-        st.markdown(' - Matplotlib')
+        st.markdown(' - Tensorflow: For building and training the model')
+        st.markdown(' - Pandas: Standard ML library')
+        st.markdown(' - Numpy: Standard ML library for mathematical calculations')
+        st.markdown(' - Matplotlib: Important visuals')
+        st.markdown(' - Mediapipe: Tracking of hands and landmarks')
+        st.markdown(' - Open-Cv: For Accessing web camera for real time translation')
 
     
     with col2:
@@ -57,6 +60,12 @@ with tab2:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Dataset Description")
+        st.write('''The data used to train the model is a custom dataset that has been aquired through a proficient data collection process.
+                 the data was collected by capturing n number of sequences for each sign, where n can be given by the user. 
+                 Each sequence has 20 frames relevant to the action of the hand sign, from these 20 frames the landmarks were extracted using the mediapipe library and stored in a .npy file
+                 instead of the entire image as it is space efficient as well as trains the model in a better and faster way''')
+        
+        st.write('To the right there are some examples on how these images were collected ')
 
     with col2:
         st.subheader("Dataset Sample Images")
@@ -65,16 +74,56 @@ with tab3:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Model Description")
+        st.write('''
+This model is a sequential neural network built using the Keras API, specifically designed for sequential data processing, such as time series or sequential pattern recognition. Let's break down each layer:
+
+1. LSTM Layer (32 units):
+   - This layer consists of Long Short-Term Memory (LSTM) cells, a type of recurrent neural network (RNN) architecture designed to capture long-term dependencies in sequential data.
+   - The layer has 32 LSTM units.
+   - `return_sequences=True` indicates that the layer will return the full sequence of outputs rather than just the last output.
+   - `activation='relu'` specifies the Rectified Linear Unit (ReLU) activation function, which introduces non-linearity to the model.
+
+2. LSTM Layer (64 units):
+   - Another LSTM layer with 64 units.
+   - `return_sequences=True` is set to maintain the sequence output.
+   - `activation='relu'` as the activation function.
+
+3. LSTM Layer (32 units):
+   - Another LSTM layer with 32 units.
+   - Unlike the previous layers, `return_sequences=False`, indicating that it will only return the last output of the sequence.
+   - `activation='relu'` is used.
+
+4. Dense Layer (32 units):
+   - A densely connected layer with 32 units.
+   - This layer doesn't specify `return_sequences`, as it's not a recurrent layer.
+   - `activation='relu'` is the activation function applied to the outputs.
+
+5. Dense Layer (output layer):
+   - Final output layer with a number of units equal to the number of actions (assuming `actions.shape[0]` represents the number of different actions).
+   - `activation='softmax'` is used here, which is typical for classification tasks. It outputs a probability distribution over the different classes, indicating the likelihood of each action being the correct one.
+
+Overall, this model architecture seems to be designed for sequential data input with a specific focus on capturing temporal dependencies using multiple LSTM layers followed by some dense layers for classification or prediction tasks.
+''')
 
     with col2:
         st.subheader("Model Architecture")
+        st.image('App/assets/LSTM.png')
 
 with tab4:
     # model_path = 'App/assets/asl_model_2.h5'
     # model = load_model(model_path)
-
+    st.subheader(' This is Main Translation Page')
+    st.write('This is where you will be able to translate sign language into texts in real time')
+    st.write('Follow the instructions on the right side to use the app -->')
     col1, col2 = st.columns(2)
     word = ''
+
+    with col2:
+        st.subheader('Instructions: ')
+        st.markdown(' - Click on "Start Translator" button to Start the app')
+        st.markdown(' - It will request permission to access your webcam')
+        st.markdown(' - The translated text will be displayed on the screen')
+        st.markdown(' - To stop the translation, click on "Stop" Button ')
     with col1:
         if st.button('Start Translator', key= 'start_button'):
             frame_placeholder = st.empty()
@@ -167,6 +216,7 @@ with tab4:
                     # Show the image on the display
                     frame_placeholder.image(image, channels='BGR')
 
+
                     cv2.waitKey(1)
 
                     if stop:
@@ -178,6 +228,3 @@ with tab4:
 
                 # Shut off the server
                 tool.close()
-    with col2:
-        st.write(word)    
-        
