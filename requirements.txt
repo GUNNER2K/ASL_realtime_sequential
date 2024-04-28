@@ -1,0 +1,7 @@
+tensorflow
+pandas
+numpy
+mediapipe
+open-cv
+keyboard
+language_tool_pythons
