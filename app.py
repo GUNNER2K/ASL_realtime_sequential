@@ -8,6 +8,7 @@ from my_functions import *
 import keyboard
 from tensorflow.keras.models import load_model
 import language_tool_python
+import base64
 
 # @st.cache_resource
 # def load_model():
@@ -51,6 +52,8 @@ with tab1:
         st.markdown(' - Matplotlib: Important visuals')
         st.markdown(' - Mediapipe: Tracking of hands and landmarks')
         st.markdown(' - Open-Cv: For Accessing web camera for real time translation')
+        st.write('**To access the source code of this entire project, click on the link below to redirect to Github repo**')
+        st.write("""<div style="width:100%;text-align:center;"><a href="https://github.com/GUNNER2K/ASL_realtime_sequential" style="float:center"><img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-zra4hqic.png" width="50px"></img></a></div>""", unsafe_allow_html=True)
 
     
     with col2:
@@ -65,10 +68,30 @@ with tab2:
                  Each sequence has 20 frames relevant to the action of the hand sign, from these 20 frames the landmarks were extracted using the mediapipe library and stored in a .npy file
                  instead of the entire image as it is space efficient as well as trains the model in a better and faster way''')
         
-        st.write('To the right there are some examples on how these images were collected ')
-
+        st.write('To the right there are some examples on how these images were collected ======>> ')
+        st.write('If you want to try out the data collection yourself, click on the link below to access the code:')
+        st.write("""<div style="width:100%;text-align:center;"><a href="https://github.com/GUNNER2K/ASL_realtime_sequential/blob/main/data_collection.py" style="float:center"><img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-zra4hqic.png" width="40px"></img></a></div>""", unsafe_allow_html=True)
+        st.markdown('**How to use data_collection file?**')
+        st.write('follow the steps below to ensure that data collection goes smoothly')
+        st.markdown(' - **Step 1**: Install the necessary libraries which are there in requirements.txt (use `pip install -r requirements.txt` in terminal)')
+        st.markdown(' - **Step 2**: configure data_collection.py file to set your vocabulary, number of sequence and frames per sequence')
+        st.markdown(' - **Step 3**: run `data_collection.py` in terminal')
+        st.markdown(' - **Step 4**: The web cam will open, now try and record each hand sign as many times as the number of sequences you chose, remember you will only have that many frames to record one action as you first chose')
+        st.markdown(' - **Step 5**: After completing all actions the web cam will automatically close')
+        st.write('Please ensure to be in a well lit room, and capture as many sequences as possible for each action so that the model can generalise quite well.')
     with col2:
-        st.subheader("Dataset Sample Images")
+        st.subheader("Dataset collection sample video")
+        file_ = open("App/assets/collection.gif", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        #st.video('App/assets/collection.mp4',format="video/mp4")
+
+        st.markdown(
+    f'<img src="data:image/gif;base64,{data_url}" alt="GIF_DATA_COLLECTION">',
+    unsafe_allow_html=True,
+)
+
 
 with tab3:
     col1, col2 = st.columns(2)
