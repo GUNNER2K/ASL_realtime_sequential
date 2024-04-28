@@ -2,6 +2,7 @@ tensorflow
 pandas
 numpy
 mediapipe
-open-cv
+opencv-python
 keyboard
-language_tool_pythons
+language-tool-python
+streamlit
